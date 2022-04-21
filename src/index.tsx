@@ -1,5 +1,11 @@
-import reactDOM from 'react-dom'
-import App from './App';
+import App from './App'
 import './index.scss'
 
-reactDOM.render(<App></App>, document.querySelector('#root'))
+import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
+import store from './store'
+createRoot(document.querySelector('#root') as Element).render(
+  <Provider store={store}>
+    <App></App>
+  </Provider>
+)

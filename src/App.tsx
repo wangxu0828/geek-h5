@@ -8,7 +8,11 @@ export default function App() {
     <Router>
       <div className="app">
         {/* <Redirect from='/' to='/layout'></Redirect> */}
-        <Route path='/' render={() => <Redirect to='/layout'></Redirect>}></Route>
+        <Route
+          exact
+          path="/"
+          render={() => <Redirect to="/layout"></Redirect>}
+        ></Route>
         <Route path="/layout">
           <Layout></Layout>
         </Route>
