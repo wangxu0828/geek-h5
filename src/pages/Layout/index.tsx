@@ -1,14 +1,60 @@
 import React from 'react'
-import { Button } from 'antd-mobile'
-
+import styles from './index.module.scss'
+import { TabBar } from 'antd-mobile'
+import {} from 'antd-mobile-icons'
+import Icon from '@/components/Icon'
+import { useHistory, useLocation } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
+import Home from '../Home'
+import Question from '../Question'
+import Profile from '../Profile'
+import Video from '../Video'
 export default function Layout() {
+  const tabs = [
+    { path: '/home', icon: 'iconbtn_home', text: '首页' },
+    { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
+    { path: '/home/video', icon: 'iconbtn_video', text: '视频' },
+    { path: '/home/profile', icon: 'iconbtn_mine', text: '我的' }
+  ]
+  const history = useHistory()
+  const setRouteActive = (value: string) => {
+    history.push(value)
+  }
+  const location = useLocation()
   return (
-    <div>
-      <Button color="primary">Button</Button>
-      <svg className="icon" aria-hidden="true">
-        {/* 使用时，只需要将此处的 iconbtn_like_sel 替换为 icon 的名称即可*/}
-        <use xlinkHref="#iconbtn_like_sel"></use>
-      </svg>
+    <div className={styles.root}>
+      <Switch>
+        <Route exact path="/home">
+          <Home></Home>
+        </Route>
+        <Route path="/home/question">
+          <Question></Question>
+        </Route>
+        <Route path="/home/video">
+          <Video></Video>
+        </Route>
+        <Route path="/home/profile">
+          <Profile></Profile>
+        </Route>
+      </Switch>
+      <TabBar
+        className="tab-bar"
+        onChange={(value) => setRouteActive(value)}
+        activeKey={location.pathname}
+      >
+        {tabs.map((item) => (
+          <TabBar.Item
+            key={item.path}
+            icon={(active) => (
+              <Icon
+                type={active ? `${item.icon}_sel` : item.icon}
+                className="tab-bar-item-icon"
+              ></Icon>
+            )}
+            title={item.text}
+          />
+        ))}
+      </TabBar>
     </div>
   )
 }
