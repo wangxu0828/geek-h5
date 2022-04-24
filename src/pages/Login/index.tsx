@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { NavBar, Form, Input, List, Button, Toast } from 'antd-mobile'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { getCode, login } from '@/store/actions/login'
 import { loginForm } from '@/types/data'
@@ -11,6 +11,7 @@ import { InputRef } from 'antd-mobile/es/components/input'
 export default function Login() {
   const history = useHistory()
   // 返回函数
+  const location = useLocation<{ from: string }>()
   const back = () => {
     history.go(-1)
   }
@@ -24,7 +25,8 @@ export default function Login() {
         content: '登陆成功',
         duration: 300,
         afterClose: () => {
-          history.push('/home')
+          let pathname = location.state ? location.state.from : '/home'
+          history.replace(pathname)
         }
       })
     } catch (error) {

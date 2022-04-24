@@ -1,6 +1,6 @@
 import { cache_Token } from '@/constance'
 import { ApiResponse, loginForm, Token } from '@/types/data'
-import { RootThunkAction } from '@/types/store'
+import { LoginAction, RootThunkAction } from '@/types/store'
 import cache from '@/utils/cache'
 import instance from '@/utils/request'
 const login = (values: loginForm): RootThunkAction => {
@@ -25,4 +25,20 @@ const getCode = (mobile: string) => {
   }
 }
 
-export { login, getCode }
+const logout = (): LoginAction => {
+  cache.clearCache()
+  return {
+    type: 'login/logout'
+  }
+}
+
+const saveToken = (token: Token): LoginAction => {
+  // 存储到本地
+  cache.setCache(cache_Token, token)
+  return {
+    type: 'login/saveToken',
+    payload: token
+  }
+}
+
+export { login, getCode, logout, saveToken }

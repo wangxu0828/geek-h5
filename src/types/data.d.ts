@@ -6,7 +6,7 @@ export type loginForm = {
 
 export type Token = {
   token: string
-  refreshToken: string
+  refresh_token: string
 }
 
 export type ApiResponse<T> = {

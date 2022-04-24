@@ -1,13 +1,27 @@
-import { Button, List, NavBar, Popup, Toast } from 'antd-mobile'
+import {
+  Button,
+  List,
+  NavBar,
+  Popup,
+  Toast,
+  DatePicker,
+  Dialog
+} from 'antd-mobile'
 import classNames from 'classnames'
-import { getUserProfile, updateUserProfile } from '@/store/actions/profile'
+import {
+  getUserProfile,
+  updateUserPhoto,
+  updateUserProfile
+} from '@/store/actions/profile'
 import styles from './index.module.scss'
 import { useHistory } from 'react-router-dom'
 import { useInitialState } from '@/utils/hooks'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import EditInput from './EditInput'
 import EditList from './EditList'
 import { useDispatch } from 'react-redux'
+import dayjs from 'dayjs'
+import { logout } from '@/store/actions/login'
 const Item = List.Item
 type InputState = {
   visible: boolean
@@ -36,13 +50,18 @@ const ProfileEdit = () => {
   // 讲editinput的数据回传给父组件
   const dispatch = useDispatch()
   const onUpdate = (key: string, value: string) => {
-    console.log(key, value)
+    if (key === 'photo') {
+      // 需要修改头像
+      fileRef.current!.click()
+      return
+    }
     dispatch(updateUserProfile(key, value))
     Toast.show({
       icon: 'success',
       content: '修改成功'
     })
     hideInput()
+    hideList()
   }
 
   const [showList, setShowList] = useState<ListState>({
@@ -56,7 +75,67 @@ const ProfileEdit = () => {
       visible: false
     })
   }
+  // 图片上传组件ref
+  const fileRef = useRef<HTMLInputElement>(null)
 
+  const onPhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0]
+    // 需要上传这张图片
+    const fd = new FormData()
+    fd.append('photo', file)
+    // 发送请求
+    await dispatch(updateUserPhoto(fd))
+    Toast.show({
+      icon: 'success',
+      content: '修改头像成功'
+    })
+    hideList()
+  }
+
+  // 日期选择器
+  const [showBirthday, setShowBirthday] = useState(false)
+  const onBirthdayShow = () => {
+    setShowBirthday(true)
+  }
+  const onBirthdayHide = () => {
+    setShowBirthday(false)
+  }
+  // 退出功能
+  const onLogout = () => {
+    Dialog.show({
+      title: '温馨提示',
+      content: '你确定要退出吗？',
+      closeOnAction: true,
+      actions: [
+        [
+          {
+            key: 'cancel',
+            text: '取消',
+            style: {
+              color: 'blue'
+            }
+          },
+          {
+            key: 'confirm',
+            text: '确定',
+            danger: true,
+            bold: true,
+            onClick: () => {
+              // 1. 清除token
+              dispatch(logout())
+              // 2. 跳转到登录
+              history.replace('/login')
+              // 3. 给一个提示消息
+              Toast.show({
+                icon: 'success',
+                content: '退出成功'
+              })
+            }
+          }
+        ]
+      ]
+    })
+  }
   return (
     <div className={styles.root}>
       <div className="content">
@@ -121,17 +200,28 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={userProfile.gender === 0 ? '男' : '女'}>
+            <Item
+              arrow
+              extra={userProfile.gender === 0 ? '男' : '女'}
+              onClick={() => {
+                setShowList({
+                  visible: true,
+                  type: 'gender'
+                })
+              }}
+            >
               {'性别'}
             </Item>
-            <Item arrow extra={userProfile.birthday}>
+            <Item arrow extra={userProfile.birthday} onClick={onBirthdayShow}>
               生日
             </Item>
           </List>
         </div>
 
         <div className="logout">
-          <Button className="btn">退出登录</Button>
+          <Button className="btn" onClick={onLogout}>
+            退出登录
+          </Button>
         </div>
       </div>
       {/* destroyOnClose保证关闭弹层的时候销毁组件 */}
@@ -144,9 +234,26 @@ const ProfileEdit = () => {
           ></EditInput>
         </div>
       </Popup>
-      <Popup visible={showList.visible}>
-        <EditList hideList={hideList} />
+      <Popup visible={showList.visible} destroyOnClose>
+        <EditList
+          type={showList.type}
+          hideList={hideList}
+          onUpdate={onUpdate}
+        />
       </Popup>
+      <DatePicker
+        visible={showBirthday}
+        onCancel={onBirthdayHide}
+        value={new Date(userProfile.birthday)}
+        title="请选择日期"
+        min={new Date('1900-01-01')}
+        max={new Date()}
+        onConfirm={(val) => {
+          onUpdate('birthday', dayjs(val).format('YYYY-MM-DD'))
+          onBirthdayHide()
+        }}
+      />
+      <input type="file" hidden ref={fileRef} onChange={onPhotoChange} />
     </div>
   )
 }

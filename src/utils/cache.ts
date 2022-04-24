@@ -18,7 +18,7 @@ class Cache {
   }
 
   hasCache(key: string) {
-    return !!this.getCache(key)
+    return this.getCache(key).token
   }
 }
 

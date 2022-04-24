@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Layout from '../src/pages/Layout'
 import Login from '../src/pages/Login'
 import Edit from '@/pages/Profile/Edit'
+import PrivateRoute from './components/AuthRoute'
 export default function App() {
   return (
     <Router>
@@ -19,9 +20,9 @@ export default function App() {
         <Route path="/login">
           <Login></Login>
         </Route>
-        <Route path="/profile/edit">
+        <PrivateRoute path="/profile/edit">
           <Edit></Edit>
-        </Route>
+        </PrivateRoute>
       </div>
     </Router>
   )

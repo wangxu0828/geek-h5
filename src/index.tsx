@@ -1,11 +1,11 @@
 import App from './App'
 import './index.scss'
-
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './store'
-createRoot(document.querySelector('#root') as Element).render(
+ReactDOM.render(
   <Provider store={store}>
-    <App></App>
-  </Provider>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 )

@@ -3,10 +3,18 @@ import { ThunkAction } from 'redux-thunk'
 import { Profile, Token, UserProfile } from './data'
 
 // 各个默认的Action
-export type LoginAction = {
-  type: 'login/login'
-  payload: Token
-}
+export type LoginAction =
+  | {
+      type: 'login/login'
+      payload: Token
+    }
+  | {
+      type: 'login/logout'
+    }
+  | {
+      type: 'login/saveToken'
+      payload: Token
+    }
 
 export type ProfileAction =
   | {

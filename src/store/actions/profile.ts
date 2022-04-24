@@ -32,4 +32,12 @@ const updateUserProfile = (key: string, value: string): RootThunkAction => {
   }
 }
 
-export { getProfile, getUserProfile, updateUserProfile }
+const updateUserPhoto = (fd: FormData): RootThunkAction => {
+  return async (dispatch) => {
+    await instance.patch('/user/photo', fd)
+    // 重新渲染
+    dispatch(getUserProfile())
+  }
+}
+
+export { getProfile, getUserProfile, updateUserProfile, updateUserPhoto }
