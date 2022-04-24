@@ -4,7 +4,6 @@ import { cache_Token } from '@/constance/index'
 
 export default function PrivateRoute({ children, ...rest }: RouteProps) {
   const location = useLocation()
-  console.log(cache.hasCache(cache_Token))
 
   return cache.hasCache(cache_Token) ? (
     <Route {...rest} children={children} />

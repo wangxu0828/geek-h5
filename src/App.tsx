@@ -4,6 +4,7 @@ import Layout from '../src/pages/Layout'
 import Login from '../src/pages/Login'
 import Edit from '@/pages/Profile/Edit'
 import PrivateRoute from './components/AuthRoute'
+import Chat from '@/pages/Profile/Chat'
 export default function App() {
   return (
     <Router>
@@ -22,6 +23,9 @@ export default function App() {
         </Route>
         <PrivateRoute path="/profile/edit">
           <Edit></Edit>
+        </PrivateRoute>
+        <PrivateRoute path="/profile/chat">
+          <Chat></Chat>
         </PrivateRoute>
       </div>
     </Router>

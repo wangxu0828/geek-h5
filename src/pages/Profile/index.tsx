@@ -2,7 +2,7 @@ import { getProfile } from '@/store/actions/profile'
 import { RootState } from '@/types/store'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styles from './index.module.scss'
 import Icon from '@/components/Icon'
 
@@ -12,18 +12,21 @@ const Profile = () => {
     dispatch(getProfile())
   }, [dispatch])
   const profile = useSelector((state: RootState) => state.profile.profile)
+  const history = useHistory()
   return (
     <div className={styles.root}>
       <div className="profile">
         {/* 个人信息 */}
         <div className="user-info">
           <div className="avatar">
-            <img src={profile.photo} alt="" />
+            <img
+              src={'http://toutiao.itheima.net/images/user_head.jpg'}
+              alt=""
+            />
           </div>
-          <div className="user-name">{profile.name}</div>
-          <Link to="/profile/edit" className="user-profile">
-            个人信息
-            <Icon type="iconbtn_right" />
+          <div className="user-name">黑马先锋</div>
+          <Link to="/profile/edit" style={{ display: 'flex' }}>
+            个人信息 <Icon type="iconbtn_right" />
           </Link>
         </div>
 
@@ -42,7 +45,7 @@ const Profile = () => {
             <p>动态</p>
           </div>
           <div className="count-item">
-            <p>{profile.like_count}</p>
+            <p>{profile.follow_count}</p>
             <p>关注</p>
           </div>
           <div className="count-item">
@@ -50,8 +53,46 @@ const Profile = () => {
             <p>粉丝</p>
           </div>
           <div className="count-item">
-            <p>{profile.follow_count}</p>
+            <p>{profile.like_count}</p>
             <p>被赞</p>
+          </div>
+        </div>
+
+        {/* 消息通知 - 对应的这一行 */}
+        <div className="user-links">
+          <div className="link-item">
+            <Icon type="iconbtn_mymessages" />
+            <div>消息通知</div>
+          </div>
+          <div className="link-item">
+            <Icon type="iconbtn_mycollect" />
+            <div>收藏</div>
+          </div>
+          <div className="link-item">
+            <Icon type="iconbtn_history1" />
+            <div>浏览历史</div>
+          </div>
+          <div className="link-item">
+            <Icon type="iconbtn_myworks" />
+            <div>我的作品</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 更多服务 */}
+      <div className="more-service">
+        <h3>更多服务</h3>
+        <div className="service-list">
+          <div className="service-item">
+            <Icon type="iconbtn_feedback" />
+            <div>用户反馈</div>
+          </div>
+          <div
+            className="service-item"
+            onClick={() => history.push('/profile/chat')}
+          >
+            <Icon type="iconbtn_xiaozhitongxue" />
+            <div>小智同学</div>
           </div>
         </div>
       </div>
