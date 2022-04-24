@@ -35,3 +35,23 @@ export type UserProfile = {
   birthday: string
   intro: string
 }
+
+// 获取频道列表接口
+export type Channel = {
+  id: number
+  name: string
+}
+
+export type Article = {
+  art_id: string
+  title: string
+  aut_id: string
+  comm_count: number
+  pubdate: string
+  aut_name: string
+  is_top: number
+  cover: {
+    type: 0 | 1 | 3
+    images: string[]
+  }
+}

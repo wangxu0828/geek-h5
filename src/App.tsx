@@ -5,6 +5,7 @@ import Login from '../src/pages/Login'
 import Edit from '@/pages/Profile/Edit'
 import PrivateRoute from './components/AuthRoute'
 import Chat from '@/pages/Profile/Chat'
+import Article from '@/pages/Article'
 export default function App() {
   return (
     <Router>
@@ -27,6 +28,9 @@ export default function App() {
         <PrivateRoute path="/profile/chat">
           <Chat></Chat>
         </PrivateRoute>
+        <Route path="/article/:id">
+          <Article />
+        </Route>
       </div>
     </Router>
   )
