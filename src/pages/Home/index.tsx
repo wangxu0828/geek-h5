@@ -7,6 +7,7 @@ import Channels from './components/Channels'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ArticleList from './components/ArticleList'
+import { useHistory } from 'react-router-dom'
 const Home = () => {
   const { userChannel, active } = useInitialState(getUserChannel, 'home')
   const [visible, setVisible] = useState(false)
@@ -20,6 +21,7 @@ const Home = () => {
   const onChange = (key: string) => {
     dispatch(changeActive(+key))
   }
+  const history = useHistory()
   return (
     <div className={styles.root}>
       {/* 频道 Tabs 列表 */}
@@ -37,7 +39,7 @@ const Home = () => {
       </Tabs>
 
       <div className="tabs-opration">
-        <Icon type="iconbtn_search" />
+        <Icon type="iconbtn_search" onClick={() => history.push('/search')} />
         <Icon type="iconbtn_channel" onClick={show} />
       </div>
       <Popup position="left" visible={visible}>

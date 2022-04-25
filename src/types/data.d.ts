@@ -55,3 +55,51 @@ export type Article = {
     images: string[]
   }
 }
+
+export type Suggestion = string[]
+
+export type History = string[]
+
+export type SearchResultRes = {
+  page: number
+  per_page: number
+  results: Article[]
+  total_count: number
+}
+
+// 文章详情
+export type ArticleDetail = {
+  art_id: string
+  attitude: number
+  aut_id: string
+  aut_name: string
+  aut_photo: string
+  comm_count: number
+  content: string
+  is_collected: boolean
+  is_followed: boolean
+  like_count: number
+  pubdate: string
+  read_count: number
+  title: string
+}
+
+export type Comment = {
+  aut_id: string
+  aut_name: string
+  aut_photo: string
+  com_id: string
+  content: string
+  is_followed: boolean
+  is_liking: boolean
+  like_count: number
+  pubdate: string
+  reply_count: number
+}
+
+export type CommentRes = {
+  end_id: string
+  last_id: string
+  results: Comment[]
+  total_count: number
+}

@@ -10,6 +10,7 @@ import Question from '../Question'
 import Profile from '../Profile'
 import Video from '../Video'
 import PrivateRoute from '@/components/AuthRoute'
+import KeepAlive from '@/components/KeepAlive'
 export default function Layout() {
   const tabs = [
     { path: '/home', icon: 'iconbtn_home', text: '首页' },
@@ -24,10 +25,10 @@ export default function Layout() {
   const location = useLocation()
   return (
     <div className={styles.root}>
+      <KeepAlive activePath="/home" path="/home" exact>
+        <Home></Home>
+      </KeepAlive>
       <Switch>
-        <Route exact path="/home">
-          <Home></Home>
-        </Route>
         <Route path="/home/question">
           <Question></Question>
         </Route>

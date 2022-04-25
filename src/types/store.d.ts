@@ -1,6 +1,13 @@
 import store from '@/store'
 import { ThunkAction } from 'redux-thunk'
-import { Channel, Profile, Token, UserProfile } from './data'
+import {
+  Channel,
+  Profile,
+  Token,
+  UserProfile,
+  Suggestion,
+  History
+} from './data'
 
 // 各个默认的Action
 export type LoginAction =
@@ -55,7 +62,51 @@ export type HomeAction =
         articles: Article[]
       }
     }
-export type RootAction = loginAction | ProfileAction | HomeAction
+
+export type SearchAction =
+  | {
+      type: 'search/suggestion'
+      payload: Suggestion
+    }
+  | {
+      type: 'search/history'
+      payload: History
+    }
+  | {
+      type: 'search/clearHistories'
+    }
+  | {
+      type: 'search/saveResults'
+      payload: SearchResultRes
+    }
+
+export type ArticleAction =
+  | {
+      type: 'article/setArticleInfo'
+      payload: ArticleDetail
+    }
+  | {
+      type: 'article/saveComment'
+      payload: CommentRes
+    }
+  | {
+      type: 'article/clearComment'
+    }
+  | {
+      type: 'article/saveNewComment'
+      payload: Comment
+    }
+  | {
+      type: 'article/addReplyCount'
+      payload: string
+    }
+
+export type RootAction =
+  | loginAction
+  | ProfileAction
+  | HomeAction
+  | SearchAction
+  | ArticleAction
 
 export type RootState = ReturnType<typeof store.getState>
 
